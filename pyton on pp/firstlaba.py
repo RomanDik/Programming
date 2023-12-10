@@ -3,62 +3,75 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import urllib.request
-if not os.path.exists('dataset'):
-    os.mkdir('dataset')
-if not os.path.exists('dataset/polar_bear'):
-    os.mkdir('dataset/polar_bear')
-if not os.path.exists('dataset/brown_bear'):
-    os.mkdir('dataset/brown_bear')
-def driver_scroller(driver, pix):
+
+
+def make_directory(directory_polarbear, directory_brownbear):
+    if not os.path.exists('dataset'):
+        os.mkdir('dataset')
+    if not os.path.exists(directory_polarbear):
+        os.mkdir('dataset/polarbear')
+    if not os.path.exists(directory_brownbear):
+        os.mkdir('dataset/brownbear')
+
+
+def scroll_driver(driver, height):
+    scroll_range = 0
+    while scroll_range < height:
+        driver.execute_script(f"window.scrollTo(0, {scroll_range});") 
+        scroll_range += 10
     
-    sroll_range = 0
-    while sroll_range < pix:
-        driver.execute_script(f"window.scrollTo(0, {sroll_range});") 
-        sroll_range += 4
 
+list_polarbear=[]
+list_brownbear=[]
 
-full_list_polar_bear=[]
-full_list_brown_bear=[]
-
-def make_driver_with_link(link, path_name, name):
-    global full_list_polar_bear,  full_list_brown_bear
-    driver = webdriver.Opera()
+def make_driver(link, path_name, name):
+    global list_polarbear,  list_brownbear
+    driver = webdriver.Edge()
     driver.get(link)
     time.sleep(4)
-    driver_scroller(driver, 20000)
+    scroll_driver(driver, 20000)
     list_pictures = driver.find_elements(By.XPATH, path_name)
-    if name=="polar_bear":
-        full_list_polar_bear += list_pictures
-    if name=="brown_bear":
-        full_list_brown_bear += list_pictures
-    print(len(full_list_polar_bear),len(full_list_brown_bear))
-    for i in range(6):
-     if len(full_list_polar_bear) < 1010:
-        make_driver_with_link(f"https://yandex.ru/images/search?p={i}&from=tabbar&text=polar bear&lr=51&rpt=image", "//img[@class='serp-item__thumb justifier__thumb']","cat")
-        time.sleep(10)
-    for i in range(6):        
-     if len(full_list_brown_bear) < 1010:
-        make_driver_with_link(f"https://yandex.ru/images/search?p={i}&from=tabbar&text=brown bear&lr=51&rpt=image", "//img[@class='serp-item__thumb justifier__thumb']", "dog")
-        time.sleep(10)
+    if name=="polarbear":
+        list_polarbear += list_pictures
+    if name=="brownbear":
+        list_brownbear += list_pictures
+    print(len(list_polarbear),len(list_brownbear))
 
 
 def make_name(value):
     return '0'*(4-len(str(value))) + str(value)
 
-def save_pictures():
-    global full_list_polar_bear,  full_list_brown_bear
-    directory_polar_bear = "dataset/polar_bear"
-    directory_dog = "dataset/brown_bear"
-    print(f'lens: {len(full_list_polar_bear)}, {len(full_list_brown_bear)}')
-    for elem in range(len(full_list_polar_bear)):
-        img = urllib.request.urlopen(full_list_polar_bear[elem].get_attribute('src')).read()
-        out = open(f"{directory_polar_bear}/{make_name(elem)}.jpg", "wb")
+def save_image():
+    global list_polarbear,  list_brownbear
+    directory_polarbear = "dataset/polarbear"
+    directory_brownbear = "dataset/brownbear"
+    make_directory(directory_polarbear, directory_brownbear)
+    print(f'lens: {len(list_polarbear)}, {len(list_brownbear)}')
+
+    for elem in range(len(list_polarbear)):
+        img = urllib.request.urlopen(list_polarbear[elem].get_attribute('src')).read()
+        out = open(f"{directory_polarbear}/{make_name(elem)}.jpg", "wb")
         out.write(img)
         out.close
-    for elem in range(len(full_list_brown_bear)):
-        img = urllib.request.urlopen(full_list_brown_bear[elem].get_attribute('src')).read()
-        out = open(f"{directory_dog}/{make_name(elem)}.jpg", "wb")
+    for elem in range(len(list_brownbear)):
+        img = urllib.request.urlopen(list_brownbear[elem].get_attribute('src')).read()
+        out = open(f"{directory_brownbear}/{make_name(elem)}.jpg", "wb")
         out.write(img)
         out.close
+
+def main():
+    for i in range(7):
+        if len(list_polarbear) < 1000:
+            make_driver(f"https://yandex.ru/images/search?p={i}&from=tabbar&text=polar_bear&lr=51&rpt=image", "//img[@class='serp-item__thumb justifier__thumb']","polar_bear")
+            time.sleep(10)
+    for i in range(7):        
+        if len(list_brownbear) < 1000:
+            make_driver(f"https://yandex.ru/images/search?p={i}&from=tabbar&text=brown_bear&lr=51&rpt=image", "//img[@class='serp-item__thumb justifier__thumb']", "brown_bear")
+            time.sleep(10)
+    save_image()
+
+
+
 if __name__ == "__main__":
-    save_pictures()
+   
+    main()
