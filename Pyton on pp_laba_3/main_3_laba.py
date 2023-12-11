@@ -18,7 +18,7 @@ class Window(QMainWindow):
         self.initIterators()
         self.createActions()
         self.createMenuBar()
-        self.setGeometry(450, 200, 1000, 700)
+        self.setGeometry(450, 200, 1200, 800)
 
     """Главноt окно и кнопки"""
     def initUI(self) -> None:
@@ -112,6 +112,44 @@ class Window(QMainWindow):
         self.createData3Action = QAction('&Create dataset3')
         self.createData3Action.triggered.connect(self.createDataset3)
     
+        
+    """Аннотация для текущего dataset"""
+    def createAnnotation(self) -> None:
+    
+        if 'dataset' in str(self.folderpath):
+            make_annotation()
+        elif 'dataset_2' in str(self.folderpath):
+            make_annotation_2()
+        elif 'dataset_3' in str(self.folderpath):
+            make_annotation_3()
+
+    """Действия с dataset..."""
+    """Изменение текущего dataset"""
+    def changeDataset(self) -> None:
+        reply = QMessageBox.question(self, 'Warning', f'Are you sure you want to change current dataset?\nCurrent dataset: {str(self.folderpath)}', QMessageBox.Yes | QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            self.folderpath = QFileDialog.getExistingDirectory(self, 'Select Folder')
+        else:
+            pass
+    
+    """Создание dataset_2 (имя класса и номер)"""
+    def createDataset2(self) -> None:
+        make_dataset_2()
+        self.dataMenu.addAction(self.createData3Action)
+
+    """Создание dataset_3 (рандом)"""
+    def createDataset3(self) -> None:
+        make_dataset_3()
+
+    """Подтверждение"""
+    def closeEvent(self, event: QEvent) -> None:
+        reply = QMessageBox.question(self, 'Message', 'Are you sure to escape?',
+                                     QMessageBox.Yes | QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
 def main() -> None:
     app = QApplication(sys.argv)
