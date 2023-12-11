@@ -20,7 +20,7 @@ class Window(QMainWindow):
         self.createMenuBar()
         self.setGeometry(450, 200, 1000, 700)
 
-    """главноt окно и кнопоки"""
+    """Главноt окно и кнопки"""
     def initUI(self) -> None:
         self.setWindowTitle('polarbear/brownbear')
         self.centralWidget = QWidget()
@@ -50,6 +50,68 @@ class Window(QMainWindow):
         self.folderpath = ' '
 
         self.show()
+
+    """Два объекта-итератора"""
+    def initIterators(self) -> None:
+        self.polarbear = Iterator('polarbear', 'dataset')
+        self.brownbear = Iterator('brownbear', 'dataset')
+
+    """Следующий polarbear"""
+    def nextpolarbear(self) -> None:
+        lbl_size = self.lbl.size()
+        next_image = next(self.polarbear)
+        if next_image != None:
+            img = QPixmap(next_image).scaled(lbl_size, Qt.KeepAspectRatio)
+            self.lbl.setPixmap(img)
+            self.lbl.setAlignment(Qt.AlignCenter)
+        else:
+            self.initIterators()
+            self.nextpolarbear()
+
+    """Следующий brownbear"""
+    def nextbrownbear(self) -> None:
+        lbl_size = self.lbl.size()
+        next_image = next(self.brownbear)
+        if next_image != None:
+            img = QPixmap(next_image).scaled(lbl_size, aspectRatioMode=Qt.KeepAspectRatio)
+            self.lbl.setPixmap(img)
+            self.lbl.setAlignment(Qt.AlignCenter)
+        else:
+            self.initIterators()
+            self.nextbrownbear()
+
+    """Меню и действия"""
+    def createMenuBar(self) -> None:
+        menuBar = self.menuBar()
+
+        self.fileMenu = menuBar.addMenu('&File')
+        self.fileMenu.addAction(self.exitAction)
+        self.fileMenu.addAction(self.changeAction)
+
+        self.annotationMenu = menuBar.addMenu('&Annotation')
+        self.annotationMenu.addAction(self.createannotationAction)
+
+        self.dataMenu = menuBar.addMenu('&Dataset')
+        self.dataMenu.addAction(self.createData2Action)
+
+    """Действия в меню"""
+    def createActions(self) -> None:
+    
+        self.exitAction = QAction('&Exit')
+        self.exitAction.triggered.connect(qApp.quit)
+
+        self.changeAction = QAction('&Change dataset')
+        self.changeAction.triggered.connect(self.changeDataset)
+
+        self.createannotationAction = QAction('&Create annotation for current dataset')
+        self.createannotationAction.triggered.connect(self.createAnnotation)
+
+        self.createData2Action = QAction('&Create dataset2')
+        self.createData2Action.triggered.connect(self.createDataset2)
+
+        self.createData3Action = QAction('&Create dataset3')
+        self.createData3Action.triggered.connect(self.createDataset3)
+    
 
 def main() -> None:
     app = QApplication(sys.argv)
