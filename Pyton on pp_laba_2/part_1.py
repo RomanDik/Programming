@@ -2,11 +2,9 @@ import os
 import csv
 from typing import List
 
+"""список абсолютных путей для  изображений определенного медведя"""
 def get_absolute_path(name: str) -> List[str]:
-    """
-    Данная функция возвращает список абсолютных путей для всех изображений 
-    определенного имени медведя, переданного в функцию
-    """
+    
     name_absolute_path=os.path.abspath(f"dataset/{name}")
     image_names = os.listdir(name_absolute_path)
 
@@ -14,11 +12,9 @@ def get_absolute_path(name: str) -> List[str]:
     
     return image_absolute_paths
 
+"""список относительных путей для  изображений определенного медведя"""
 def get_relative_path(name: str) -> List[str]:
-    """
-    Данная функция возвращает список относительных путей для всех изображений 
-    определенного имени медведя, переданного в функцию
-    """
+    
     name_relative_path=os.path.relpath(f"dataset/{name}")
     image_names = os.listdir(name_relative_path)
 
