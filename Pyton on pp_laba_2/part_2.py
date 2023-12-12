@@ -3,8 +3,9 @@ import shutil
 import csv
 from typing import List
 
+"""абсолютный путь для картинок определенного имени медведя"""
 def get_absolute_path2(name: str) -> List[str]:
-    """абсолютный путь для картинок определенного имени медведя"""
+    
     absolute_path = os.path.abspath('dataset_2')
     image_names = os.listdir(absolute_path)
 
@@ -14,9 +15,9 @@ def get_absolute_path2(name: str) -> List[str]:
         map(lambda name: os.path.join(absolute_path, name), image_class_names))
     return image_absolute_paths
 
-
+"""относительный путь для картинок определенного имени медведя"""
 def get_relative_path2(name: str) -> List[str]:
-    """относительный путь для картинок определенного имени медведя"""
+    
     relative_path = os.path.relpath('dataset_2')
     image_names = os.listdir(relative_path)
 
@@ -26,9 +27,9 @@ def get_relative_path2(name: str) -> List[str]:
         map(lambda name: os.path.join(relative_path, name), image_class_names))
     return image_relative_paths
 
-
+"""Изменяет имена, объединяет номер и класс, переносит в dataset2 и удаляет старую папку"""
 def replace_images(name: str) -> None:
-    """Изменяет имена, объединяет номер и класс, переносит в dataset2 и удаляет старую папку"""
+    
     relative_path = os.path.relpath('dataset_2')
     class_path = os.path.join(relative_path, name)
     image_names = os.listdir(class_path)
