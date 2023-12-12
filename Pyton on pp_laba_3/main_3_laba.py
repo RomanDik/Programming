@@ -5,8 +5,8 @@ from part_2 import make_dataset_2, make_annotation_2
 from part_3 import make_dataset_3, make_annotation_3
 from part_5 import Iterator
 
-from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QPainter, QPixmap
+from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtWidgets import  *
 
 
@@ -18,7 +18,7 @@ class Window(QMainWindow):
         self.initIterators()
         self.createActions()
         self.createMenuBar()
-        self.setGeometry(450, 200, 1200, 800)
+        self.setGeometry(300, 100, 1200, 800)
 
     """Главноt окно и кнопки"""
     def initUI(self) -> None:
@@ -144,7 +144,7 @@ class Window(QMainWindow):
 
     """Подтверждение"""
     def closeEvent(self, event: QEvent) -> None:
-        reply = QMessageBox.question(self, 'Message', 'Are you sure to escape?',
+        reply = QMessageBox.question(self, 'Warning of escaping', 'Are you sure to escape?',
                                      QMessageBox.Yes | QMessageBox.No)
         if reply == QMessageBox.Yes:
             event.accept()
