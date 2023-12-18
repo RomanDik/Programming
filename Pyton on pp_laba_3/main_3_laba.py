@@ -1,8 +1,8 @@
 import sys
 
 from part_1 import make_annotation
-from part_2 import make_dataset_2, make_annotation_2
-from part_3 import make_dataset_3, make_annotation_3
+from part_2 import make_annotation_2
+from part_3 import make_annotation_3
 from part_5 import Iterator
 
 from PyQt5.QtGui import QPainter, QPixmap
@@ -86,13 +86,9 @@ class Window(QMainWindow):
 
         self.fileMenu = menuBar.addMenu('&File')
         self.fileMenu.addAction(self.exitAction)
-        self.fileMenu.addAction(self.changeAction)
-
+        
         self.annotationMenu = menuBar.addMenu('&Annotation')
         self.annotationMenu.addAction(self.createannotationAction)
-
-        self.dataMenu = menuBar.addMenu('&Dataset')
-        self.dataMenu.addAction(self.createData2Action)
 
     """Действия в меню"""
     def createActions(self) -> None:
@@ -100,28 +96,14 @@ class Window(QMainWindow):
         self.exitAction = QAction('&Exit')
         self.exitAction.triggered.connect(qApp.quit)
 
-        self.changeAction = QAction('&Change dataset')
-        self.changeAction.triggered.connect(self.changeDataset)
-
         self.createannotationAction = QAction('&Create annotation for current dataset')
         self.createannotationAction.triggered.connect(self.createAnnotation)
 
-        self.createData2Action = QAction('&Create dataset2')
-        self.createData2Action.triggered.connect(self.createDataset2)
-
-        self.createData3Action = QAction('&Create dataset3')
-        self.createData3Action.triggered.connect(self.createDataset3)
-    
-        
     """Аннотация для текущего dataset"""
     def createAnnotation(self) -> None:
     
-        if 'dataset' in str(self.folderpath):
-            make_annotation()
-        elif 'dataset_2' in str(self.folderpath):
-            make_annotation_2()
-        elif 'dataset_3' in str(self.folderpath):
-            make_annotation_3()
+        make_annotation()
+        
 
     """Действия с dataset..."""
     """Изменение текущего dataset"""
@@ -133,15 +115,6 @@ class Window(QMainWindow):
         else:
             pass
     
-    """Создание dataset_2 (имя класса и номер)"""
-    def createDataset2(self) -> None:
-        make_dataset_2()
-        self.dataMenu.addAction(self.createData3Action)
-
-    """Создание dataset_3 (рандом)"""
-    def createDataset3(self) -> None:
-        make_dataset_3()
-
     """Подтверждение"""
     def closeEvent(self, event: QEvent) -> None:
         reply = QMessageBox.question(self, 'Warning of escaping', 'Are you sure to escape?',
