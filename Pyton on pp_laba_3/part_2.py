@@ -44,17 +44,19 @@ def replace_images(name: str) -> None:
         os.rmdir(name)
     os.chdir('..')
 
-def make_dataset_2()-> None:
-    polarbear='polarbear'
-    brownbear='brownbear'
-    if os.path.isdir('dataset_2'):
-        shutil.rmtree('dataset_2')
-    old = os.path.relpath('dataset')
-    new = os.path.relpath('dataset_2')
-    shutil.copytree(old, new)
 
-    replace_images(polarbear)
-    replace_images(brownbear) 
+def make_dataset_2(destination_folder)-> None: 
+    polarbear='polarbear' 
+    brownbear='brownbear' 
+    if os.path.isdir(destination_folder): 
+        shutil.rmtree(destination_folder) 
+    old = os.path.relpath('dataset') 
+    new = os.path.relpath(destination_folder) 
+    shutil.copytree(old, new) 
+
+    replace_images(polarbear) 
+    replace_images(brownbear)
+
 
 def make_annotation_2() -> None:
     polarbear='polarbear'

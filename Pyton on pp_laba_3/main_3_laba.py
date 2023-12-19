@@ -11,8 +11,9 @@ from PyQt5.QtWidgets import  *
 
 
 class Window(QMainWindow):
-    """Вызов методов"""
+    
     def __init__(self) -> None:
+        """Вызов методов"""
         super().__init__()
         self.initUI()
         self.initIterators()
@@ -20,8 +21,9 @@ class Window(QMainWindow):
         self.createMenuBar()
         self.setGeometry(450, 200, 1200, 800)
 
-    """Главноt окно и кнопки"""
+    
     def initUI(self) -> None:
+        """Главноt окно и кнопки"""
         self.setWindowTitle('polarbear/brownbear')
         self.centralWidget = QWidget()
         self.setCentralWidget(self.centralWidget)
@@ -51,13 +53,15 @@ class Window(QMainWindow):
 
         self.show()
 
-    """Два объекта-итератора"""
+    
     def initIterators(self) -> None:
+        """Два объекта-итератора"""
         self.polarbear = Iterator('polarbear', 'dataset')
         self.brownbear = Iterator('brownbear', 'dataset')
 
-    """Следующий polarbear"""
+    
     def nextpolarbear(self) -> None:
+        """Следующий polarbear"""
         lbl_size = self.lbl.size()
         next_image = next(self.polarbear)
         if next_image != None:
@@ -68,8 +72,9 @@ class Window(QMainWindow):
             self.initIterators()
             self.nextpolarbear()
 
-    """Следующий brownbear"""
+    
     def nextbrownbear(self) -> None:
+        """Следующий brownbear"""
         lbl_size = self.lbl.size()
         next_image = next(self.brownbear)
         if next_image != None:
@@ -80,12 +85,12 @@ class Window(QMainWindow):
             self.initIterators()
             self.nextbrownbear()
 
-    """Меню и действия"""
+   
     def createMenuBar(self) -> None:
+        """Меню и действия"""
         menuBar = self.menuBar()
 
         self.fileMenu = menuBar.addMenu('&Menu')
-        self.fileMenu.addAction(self.exitAction)
         self.fileMenu.addAction(self.changeAction)
 
         self.annotationMenu = menuBar.addMenu('&Annotation')
@@ -95,12 +100,10 @@ class Window(QMainWindow):
         self.dataMenu.addAction(self.createData2Action)
         self.dataMenu.addAction(self.createData3Action)
 
-    """Действия в меню"""
-    def createActions(self) -> None:
     
-        self.exitAction = QAction('&Exit')
-        self.exitAction.triggered.connect(qApp.quit)
-
+    def createActions(self) -> None:
+        """Действия в меню"""
+        
         self.changeAction = QAction('&Change dataset')
         self.changeAction.triggered.connect(self.changeDataset)
 
@@ -114,9 +117,9 @@ class Window(QMainWindow):
         self.createData3Action.triggered.connect(self.Dataset3)
     
         
-    """Аннотация для текущего dataset"""
-    def createAnnotation(self) -> None:
     
+    def createAnnotation(self) -> None:
+        """Аннотация для текущего dataset"""
         if 'dataset' in str(self.folderpath):
             make_annotation()
         elif 'dataset_2' in str(self.folderpath):
@@ -124,9 +127,10 @@ class Window(QMainWindow):
         elif 'dataset_3' in str(self.folderpath):
             make_annotation_3()
 
-    """Действия с dataset..."""
-    """Изменение текущего dataset"""
+    
     def changeDataset(self) -> None:
+        """Действия с dataset...
+        Изменение текущего dataset"""
         reply = QMessageBox.question(self, 'Warning', f'Are you sure you want to change current dataset?\nCurrent dataset: {str(self.folderpath)}', QMessageBox.Yes | QMessageBox.No)
 
         if reply == QMessageBox.Yes:
@@ -134,17 +138,22 @@ class Window(QMainWindow):
         else:
             pass
     
-    """Создание dataset_2 (имя класса и номер)"""
+    
     def Dataset2(self) -> None:
-        make_dataset_2()
+        """Создание dataset_2 (имя класса и номер)"""
+        self.folderpath = QFileDialog.getExistingDirectory(self, 'Select Folder')
+        make_dataset_2(self.folderpath)
         
 
-    """Создание dataset_3 (рандом)"""
+    
     def Dataset3(self) -> None:
-        make_dataset_3()
+        """Создание dataset_3 (рандом)"""
+        self.folderpath = QFileDialog.getExistingDirectory(self, 'Select Folder')
+        make_dataset_3(self.folderpath)
 
-    """Подтверждение"""
+    
     def closeEvent(self, event: QEvent) -> None:
+        """Подтверждение"""
         reply = QMessageBox.question(self, 'Message', 'Are you sure to escape?',
                                      QMessageBox.Yes | QMessageBox.No)
         if reply == QMessageBox.Yes:

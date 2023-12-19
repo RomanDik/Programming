@@ -6,13 +6,13 @@ import random
 random_numbers = random.sample(range(0, 10000), 2391)
 new_names = [f'{number}.jpg' for number in random_numbers]
 
-def make_dataset_3() -> None:
+def make_dataset_3(destination_folder) -> None:
 
-    if os.path.isdir('dataset_3'):
-        shutil.rmtree('dataset_3')
+    if os.path.isdir(destination_folder):
+        shutil.rmtree(destination_folder)
 
     old_path = os.path.relpath('dataset_2')
-    new_path = os.path.relpath('dataset_3')
+    new_path = os.path.relpath(destination_folder)
     shutil.copytree(old_path, new_path)
 
     old_names = os.listdir(new_path)
