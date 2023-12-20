@@ -1,6 +1,7 @@
 import os
 import csv
 from typing import List
+from os.path import isfile, join 
 
 def get_absolute_path(name: str) -> List[str]:
     """
@@ -26,7 +27,8 @@ def get_relative_path(name: str) -> List[str]:
 
     return image_relative_paths
     
-def make_annotation() -> None:
+def make_annotation(folderpath) -> None:
+
     polarbear='polarbear'
     brownbear='brownbear'
 
@@ -43,5 +45,3 @@ def make_annotation() -> None:
 
         for absolute_path, relative_path in zip(brownbear_absolute_paths, brownbear_relative_paths):
             writer.writerow([absolute_path, relative_path, brownbear])
-
-

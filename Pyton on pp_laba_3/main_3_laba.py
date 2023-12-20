@@ -121,11 +121,11 @@ class Window(QMainWindow):
     def createAnnotation(self) -> None:
         """Аннотация для текущего dataset"""
         if 'dataset' in str(self.folderpath):
-            make_annotation()
+            make_annotation(self.folderpath)
         elif 'dataset_2' in str(self.folderpath):
-            make_annotation_2()
+            make_annotation_2(self.folderpath)
         elif 'dataset_3' in str(self.folderpath):
-            make_annotation_3()
+            make_annotation_3(self.folderpath)
 
     
     def changeDataset(self) -> None:
